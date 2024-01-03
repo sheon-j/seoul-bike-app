@@ -37,3 +37,21 @@ python manage.py createsuperuser
 python -m data.create_data
 ```
 
+
+
+## Frontend 실행
+
+- 새로운 터미널을 엽니다.
+- 화면 개발을 위한 프론트서버를 실행합니다.
+
+```shell
+# frontend 프로젝트 서버로 이동합니다.
+cd frontend
+
+# 패키지를 설치합니다.
+yarn
+
+# 서버를 실행합니다.
+yarn dev
+```
+

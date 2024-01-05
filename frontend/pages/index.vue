@@ -2,12 +2,22 @@
   <v-row justify="center" align="center">
     <v-col cols="12">
       <v-card elevation="0">
-        <v-card-title class="font-weight-bold pb-0">
-          서울시 공공자전거 이용현황 🚴
-        </v-card-title>
+        <!-- 타이틀 -->
+        <list-title class="font-weight-bold pb-0 ml-4 mr-4"/>
         <v-card-text>
-          <LoadingList v-if="loading"/>
-          <BikeList v-else :item="item"/>
+          <!-- 로딩 스켈레톤 -->
+          <loading-list v-if="loading"/>
+          <section v-else-if="item">
+            <!-- 리스트 -->
+            <bike-list :item="item"/>
+            <!-- 페이지 -->
+            <list-pagination
+              v-if="item.count>0"
+              :count="item.count" 
+              class="mt-4 mb-0"
+              @is-loading="loading=true"
+            />
+          </section>
         </v-card-text>
       </v-card>
     </v-col>
@@ -19,6 +29,7 @@ import ApiService from '@/services/api.service'
 
 export default {
   name: 'IndexPage',
+  
   data() {
     return {
       item: null,
@@ -27,13 +38,23 @@ export default {
     }
   },
 
-  async fetch() {
-    this.loading = true
-    this.item = await this.request.get('bike/')
-    this.loading = false
+  computed: {
+    query() {
+      return this.$route.query
+    }
   },
 
-  methods: {
-  }
+  watch: {
+    query() {
+      this.$fetch()
+    }
+  },
+
+  async fetch() {
+    this.loading = true
+    const params = new URLSearchParams(this.query).toString()
+    this.item = await this.request.get(`bike/?${params}`)
+    this.loading = false
+  },
 }
 </script>

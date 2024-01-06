@@ -17,6 +17,7 @@
       class="shrink rounded-lg ml-1 mr-1"
       @keyup.enter="getSearch"
       @click:prepend-inner="getSearch"
+      @click:clear="getClear"
     />
     <!-- 필터 버튼 -->
     <v-btn icon @click="$emit('dialog-on')">
@@ -46,7 +47,14 @@ export default {
         // 포커스 해제
         this.$refs.search.blur()
       }
-    }
+    },
+
+    getClear() {
+      const {page, search, ...query} = this.$route.query
+      this.$router.push({ query })
+      // 포커스 해제
+      this.$refs.search.blur()
+    },
   }
 }
 </script>

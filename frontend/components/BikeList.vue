@@ -25,7 +25,17 @@
       hide-default-footer
       no-data-text="조회 가능한 데이터가 없습니다."
       class="mt-8"
-    />
+    >
+      <!-- 구분 -->
+      <template #[`item.rental_category`]="{ value }">
+        <span class="font-weight-bold">{{ value }}</span>
+      </template>
+
+      <!-- 일시 -->
+      <template #[`item.rental_date`]="{ value }">
+        <span class="caption">{{ value }}</span>
+      </template>
+    </v-data-table>
   </section>
 </template>
 <script>

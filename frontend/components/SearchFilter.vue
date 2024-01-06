@@ -177,7 +177,7 @@ export default {
           filters: [
             {
               text: '오래된 순',
-              value: {ordering: '-rental_date,-rental_time'},
+              value: {ordering: 'rental_date,rental_time'},
             },
             {
               text: '이동시간',

@@ -37,12 +37,13 @@ export default {
   }, 
   methods: {
     getSearch() {
-      if (this.search) {
-        // query routing
+      if (this.search) { // 텍스트 입력
+        // 페이지 제외
         const {page, ...query} = this.$route.query
+        // 이전 쿼리 값 전이
         query.search = this.search
         this.$router.push({ query })
-        // unset
+        // 포커스 해제
         this.$refs.search.blur()
       }
     }

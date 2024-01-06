@@ -12,7 +12,7 @@ class BikeList(generics.ListCreateAPIView):
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     ordering_fields = (
         'rental_date', 'rental_time', 'travel_time', 
-        'travel_distance', 'exercise', 'carbon',
+        'travel_distance', 'exercise', 'carbon', 
     )
     ordering = ('-rental_date', '-rental_time',)
     search_fields = ('place_name',)

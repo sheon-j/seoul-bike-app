@@ -10,12 +10,25 @@ from .serializers import BikeSerializer
 class BikeList(generics.ListCreateAPIView):
     serializer_class = BikeSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    ordering_fields = ('rental_date', 'rental_time', 'updated_at')
+    ordering_fields = (
+        'rental_date', 'rental_time', 'travel_time', 
+        'travel_distance', 'exercise', 'carbon',
+    )
     ordering = ('-rental_date', '-rental_time',)
-    search_fields = ('place_name', 'rental_category')
+    search_fields = ('place_name',)
     model = Bike
     queryset = Bike.objects.all()
-    filterset_fields = ['rental_date', 'rental_time', 'place_code', 'rental_category', 'place_name',]
+    filterset_fields = {
+        'rental_date': ['exact', 'lte', 'gte'], 
+        'rental_time': ['exact', 'lt', 'gte'],
+        'gender': ['exact'],
+        'age': ['contains'],
+        'rental_category': ['contains'],
+        'exercise': ['exact', 'lt', 'gte'],
+        'carbon': ['exact', 'lt', 'gte'],
+        'travel_distance': ['exact', 'lt', 'gte'],
+        'travel_time': ['exact', 'lt', 'gte'],
+    }
 
     def delete(self, request, *args, **kwargs):
         queryset = self.model.all()

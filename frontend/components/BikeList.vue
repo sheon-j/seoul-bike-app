@@ -47,14 +47,14 @@ export default {
   computed: {
     headers() {
       return [
-        {text: '구분', value: 'rental_category', width: '60', sortable: false},
+        {text: '구분', value: 'rental_category', width: '120', sortable: false},
         {text: '대여소', value: 'place_name', width: '200', sortable: false},
         {text: '일시', value: 'rental_date', align: 'right', width: 100, sortable: false},
         {text: '시간', value: 'rental_time', align: 'right', width: 60, sortable: false},
         {text: '이동거리', value: 'travel_distance', align: 'right', width: 100, sortable: false},
         {text: '이동시간', value: 'travel_time', align: 'right', width: 92, sortable: false},
         {text: '성별', value: 'gender', align: 'center', width: 56, sortable: false},
-        {text: '연령', value: 'age', width: 68, sortable: false},
+        {text: '연령', value: 'age', align: 'right', width: 68, sortable: false},
         {text: '건수', value: 'count', align: 'right', width: 72, sortable: false},
         {text: '운동량', value: 'exercise', align: 'right', width: 88, sortable: false},
         {text: '탄소량', value: 'carbon', align: 'right', width: 88, sortable: false},
@@ -66,7 +66,9 @@ export default {
     },
     describe() {
       if (this.query.search) {
-        return `"${this.query.search}"에 대한 검색 결과 `
+        return `"${this.query.search}"에 대한 검색 결과`
+      } else if (Object.keys(this.query).length > 0) {
+        return '필터링 결과'
       } else {
         return '전체'
       }

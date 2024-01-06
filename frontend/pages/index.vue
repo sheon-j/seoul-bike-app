@@ -3,7 +3,14 @@
     <v-col cols="12">
       <v-card elevation="0">
         <!-- 타이틀 -->
-        <list-title class="font-weight-bold pb-0 ml-4 mr-4"/>
+        <list-title 
+          class="font-weight-bold pb-0 ml-4 mr-4"
+          @dialog-on="dialog=true"
+        />
+        <!-- 검색 필터 다이얼로그 -->
+        <v-dialog v-model="dialog" width="800">
+          <search-filter @close="dialog=false"/>
+        </v-dialog>
         <v-card-text>
           <!-- 로딩 스켈레톤 -->
           <loading-list v-if="loading"/>
@@ -34,7 +41,8 @@ export default {
     return {
       item: null,
       loading: false,
-      request: ApiService
+      request: ApiService,
+      dialog: false
     }
   },
 

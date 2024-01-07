@@ -17,7 +17,7 @@ class BikeList(generics.ListCreateAPIView):
     filter_backends = (                # 필터 클래스 등록
         DjangoFilterBackend, 
         filters.SearchFilter, 
-        filters.OrderingFilter
+        filters.OrderingFilter,
     )
     ordering_fields = (                # 소팅 대상 필드 등록
         'rental_date',
@@ -26,6 +26,7 @@ class BikeList(generics.ListCreateAPIView):
         'travel_distance', 
         'exercise', 
         'carbon', 
+        'count',
     )
     ordering = (                       # 기본 정렬 필드 등록
         '-rental_date', 

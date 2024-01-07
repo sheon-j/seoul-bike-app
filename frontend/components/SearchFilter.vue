@@ -188,6 +188,10 @@ export default {
               value: {ordering: '-travel_distance'},
             },
             {
+              text: '건수',
+              value: {ordering: '-count'}
+            },
+            {
               text: '운동량',
               value: {ordering: '-exercise'},
             },

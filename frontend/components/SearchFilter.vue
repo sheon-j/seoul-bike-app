@@ -97,6 +97,10 @@ export default {
           title: "구분",
           filters: [
             {
+              text: '중요',
+              value: {mark: 'true'},
+            },
+            {
               text: '남자',
               value: {gender: 'M'},
             },

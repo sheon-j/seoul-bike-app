@@ -36,6 +36,7 @@ class BikeList(generics.ListCreateAPIView):
     filterset_fields = {               # 필터링 필드, 방식 등록
         'rental_date': ['exact', 'lte', 'gte'], 
         'rental_time': ['exact', 'lt', 'gte'],
+        'mark': ['exact'],
         'gender': ['exact'],
         'age': ['contains'],
         'rental_category': ['contains'],

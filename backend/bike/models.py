@@ -1,6 +1,10 @@
 from django.db import models
 
 class Bike(models.Model):
+  '''
+  Bike 테이블 필드에 타입을 지정하여 
+  ORM이 정상 수행될 수 있도록 합니다.
+  '''
   rental_date = models.DateField()
   rental_time = models.IntegerField()
   place_code = models.IntegerField()

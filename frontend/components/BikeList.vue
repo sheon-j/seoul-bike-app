@@ -35,6 +35,11 @@
       <template #[`item.rental_date`]="{ value }">
         <span class="caption">{{ value }}</span>
       </template>
+
+      <!-- 시간 -->
+      <template #[`item.rental_time`]="{ value }">
+        <span class="caption">{{ value }}</span>
+      </template>
     </v-data-table>
   </section>
 </template>
@@ -61,7 +66,7 @@ export default {
         { text: '구분', value: 'rental_category', width: '112', sortable: false },
         { text: '대여소', value: 'place_name', width: '200', sortable: false },
         { text: '일시', value: 'rental_date', align: 'right', width: 100, sortable: false },
-        { text: '시간', value: 'rental_time', align: 'right', width: 60, sortable: false },
+        { text: '시간', value: 'rental_time', align: 'right', width: 80, sortable: false },
         { text: '이동거리', value: 'travel_distance', align: 'right', width: 100, sortable: false },
         { text: '이동시간', value: 'travel_time', align: 'right', width: 100, sortable: false },
         { text: '성별', value: 'gender', align: 'center', width: 56, sortable: false },

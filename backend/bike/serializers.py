@@ -16,7 +16,7 @@ class BikeSerializer(serializers.ModelSerializer):
   class Meta:
     # 시리얼라이저에 메타 속성을 정의합니다. 
     model = Bike
-    exclude = ("id", "created_at", "updated_at")
+    exclude = ("created_at", "updated_at")
     read_only_fields = ("id", "created_at", "updated_at")
 
   # get_<field_name>으로 함수형 시리얼라이저를 정의합니다.

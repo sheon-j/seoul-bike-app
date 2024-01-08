@@ -37,6 +37,7 @@ export default {
     }
   }, 
   methods: {
+    // 함수 정의
     getSearch() {
       if (this.search) { // 텍스트 입력
         // 페이지 제외

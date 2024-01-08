@@ -38,28 +38,34 @@ export default {
   name: 'IndexPage',
   
   data() {
+    // 뷰의 반응성 데이터 속성
     return {
-      item: null,
-      loading: false,
-      request: ApiService,
-      dialog: false
+      item: null,           // fetch 할 리스트 아이템
+      loading: false,       // 로딩 정보를 표시할 Boolean
+      request: ApiService,  // Api 요청을 위한 클래스
+      dialog: false,        // 다이얼로그를 표시할 Boolean
     }
   },
 
   computed: {
+    // 가독성을 높히는 속성
     query() {
       return this.$route.query
     }
   },
 
   watch: {
+    // 특정 데이터의 변화를 감지하여 자동으로 로직을 수행
     query() {
+      // 쿼리 값이 바뀌면 fetch() 수행
       this.$fetch()
     }
   },
 
   async fetch() {
+    // backend로 부터 데이터 페치
     this.loading = true
+    // {k1: v1, k2: v2} -> k1=v1&k2=v2 
     const params = new URLSearchParams(this.query).toString()
     this.item = await this.request.get(`bike/?${params}`)
     this.loading = false

@@ -8,19 +8,35 @@ from .serializers import BikeSerializer
 
 
 class BikeList(generics.ListCreateAPIView):
-    serializer_class = BikeSerializer
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    ordering_fields = (
-        'rental_date', 'rental_time', 'travel_time', 
-        'travel_distance', 'exercise', 'carbon', 
+    '''
+    Bike 리스트 View(서비스 로직)
+    '''
+    model = Bike                       # 모델 등록
+    queryset = Bike.objects.all()      # 기본 쿼리셋
+    serializer_class = BikeSerializer  # 시리얼라이저 등록
+    filter_backends = (                # 필터 클래스 등록
+        DjangoFilterBackend, 
+        filters.SearchFilter, 
+        filters.OrderingFilter,
     )
-    ordering = ('-rental_date', '-rental_time',)
-    search_fields = ('place_name',)
-    model = Bike
-    queryset = Bike.objects.all()
-    filterset_fields = {
+    ordering_fields = (                # 소팅 대상 필드 등록
+        'rental_date',
+        'rental_time', 
+        'travel_time', 
+        'travel_distance', 
+        'exercise', 
+        'carbon', 
+        'count',
+    )
+    ordering = (                       # 기본 정렬 필드 등록
+        '-rental_date', 
+        '-rental_time',
+    )
+    search_fields = ('place_name',)    # 검색 대상 필드 등록
+    filterset_fields = {               # 필터링 필드, 방식 등록
         'rental_date': ['exact', 'lte', 'gte'], 
         'rental_time': ['exact', 'lt', 'gte'],
+        'mark': ['exact'],
         'gender': ['exact'],
         'age': ['contains'],
         'rental_category': ['contains'],
@@ -31,6 +47,9 @@ class BikeList(generics.ListCreateAPIView):
     }
 
     def delete(self, request, *args, **kwargs):
+        '''
+        특정 요청 메소드를 정의 할 수 있습니다.
+        '''
         queryset = self.model.all()
         delete_ids = request.data['ids']
         if delete_ids:
@@ -41,6 +60,9 @@ class BikeList(generics.ListCreateAPIView):
 
 
 class BikeDetail(generics.RetrieveUpdateDestroyAPIView):
+    '''
+    Bike 디테일 View
+    '''
     queryset = Bike.objects.all()
     serializer_class = BikeSerializer
     lookup_url_kwarg = 'id'

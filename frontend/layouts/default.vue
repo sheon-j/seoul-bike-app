@@ -4,7 +4,7 @@
       <v-spacer/>
         <v-toolbar-title> 
           <nuxt-link to="/">
-            <img src="~/assets/seoul-bike.png" height="30" class="mt-4" @click=""/>
+            <img src="~/assets/seoul-bike.png" height="30" class="mt-4"/>
           </nuxt-link>
         </v-toolbar-title>
       <v-spacer/>

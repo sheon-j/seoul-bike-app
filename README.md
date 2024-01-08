@@ -9,6 +9,22 @@
   (2017-01-01~2017-01-11 데이터를 2024년으로 전처리 하였습니다. 교육용으로 참고하시면 감사하겠습니다.)
 
 
+## VSCODE 익스텐션
+- Remote Development
+
+
+## Dockerfile 실행
+- 개발 환경을 위한 도커 파일을 실행합니다.
+```shell
+# 도커파일을 이미지로 빌드합니다.
+docker build -t seoul-bike-docker .
+
+# 빌드한 이미지를 실행합니다.
+docker run -v ${pwd}:/app --name jsh -dit --rm seoul-bike-docker
+```
+- VSCode로 이동합니다
+- `Ctrl`or`Cmd` + `P` 입력 > `>dev con: arc` 입력 > `JSH` 선택
+
 
 ## Backend 실행
 

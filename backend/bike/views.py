@@ -36,7 +36,7 @@ class BikeList(generics.ListCreateAPIView):
         'rental_date': ['exact', 'lte', 'gte'], 
         'rental_time': ['exact', 'lt', 'gte'],
         'gender': ['exact'],
-        'age': ['contains'],
+        'age': ['exact', 'contains'],
         'rental_category': ['contains'],
         'exercise': ['exact', 'lt', 'gte'],
         'carbon': ['exact', 'lt', 'gte'],

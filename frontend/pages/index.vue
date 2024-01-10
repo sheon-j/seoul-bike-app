@@ -13,7 +13,7 @@
           <search-filter @close="filterDialog=false"/>
         </v-dialog>
         <!-- 투두 리스트 -->
-        <v-dialog v-model="todoDialog" width="800" height="80vh">
+        <v-dialog v-model="todoDialog" width="600" height="80vh">
           <todo-list
             @close="todoDialog=false"
           />

@@ -1,5 +1,6 @@
 <template>
-  <v-card>
+  <v-card height="76vh">
+    <!-- 타이틀 -->
     <v-card-title>
       오늘 목표
       <v-spacer/>
@@ -7,83 +8,109 @@
         <v-icon> {{ mdiClose }}</v-icon>
       </v-btn>
     </v-card-title>
-    <v-card-text>
-      <v-list lines="two" select-strategy="classic">
-        <v-list-item 
-          v-for="(item, index) in items" 
-          :key="index" 
-          class="pa-0"
-        >
-          <v-list-item-action>
-            <v-checkbox v-model="item.check" :ripple="false" color="success"/>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-subtitle class="caption">
-              {{ item.username }} | {{ item.date }}
-            </v-list-item-subtitle>
-            <v-list-item-title>
-              {{ item.text }}
-            </v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-btn icon small @click=remove(item.id)>
-              <v-icon small>{{ mdiTrashCanOutline }}</v-icon>
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
-      </v-list>
-      <v-text-field
-        v-model="text"
-        outlined
-        dense
-        color="success"
-        :hide-details="true"
-        :append-icon="mdiArrowUpBox"
-        @keyup.enter="create"
-        @click:append="create"
-      />
-    </v-card-text>
+    <!-- 콘텐츠 -->
+    <v-card elevation="0" class="list-card">
+      <v-card-text>
+        <!-- 투두 리스트 -->
+        <v-list lines="two" select-strategy="classic">
+          <v-list-item 
+            v-for="(item, index) in items" 
+            :key="index" 
+            class="pa-0"
+          >
+            <!-- 체크박스 -->
+            <v-list-item-action>
+              <v-checkbox 
+                v-model="item.is_checked" 
+                :ripple="false" 
+                color="success" 
+                @click="check(item)"
+              />
+            </v-list-item-action>
+            <!-- 투두아이템 -->
+            <v-list-item-content>
+              <v-list-item-subtitle class="caption">
+                {{ item.username }} | 
+                {{ item.created_date.replace('T', ' ').slice(0, 16) }}
+              </v-list-item-subtitle>
+              <v-list-item-title>
+                {{ item.text }}
+              </v-list-item-title>
+            </v-list-item-content>
+            <!-- 삭제 -->
+            <v-list-item-action>
+              <v-btn icon small @click=remove(item.id)>
+                <v-icon small>{{ mdiTrashCanOutline }}</v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+    </v-card>
+    <!-- 입력창 -->
+    <v-card elevation="0" >
+      <v-card-text>  
+        <v-text-field
+          v-model="text"
+          outlined
+          dense
+          color="success"
+          :hide-details="true"
+          :append-icon="mdiArrowUpBox"
+          @keyup.enter="create"
+          @click:append="create"
+        />
+      </v-card-text>
+    </v-card>
   </v-card>
 </template>
 <script>
+import ApiService from '@/services/api.service'
 import { mdiClose, mdiTrashCanOutline, mdiArrowUpBox } from '@mdi/js'
 
 export default {
   data() {
     return {
+      request: ApiService,
+      items: [],
+      text: null,
       mdiClose,
       mdiTrashCanOutline,
       mdiArrowUpBox,
-      items: [],
-      text: null,
     }
   },
 
   fetch() {
-    // 리스트 페치 추가
-    this.items = [
-      {id: 1, text: '서영락 대리님 정기 점검 해주세요.', check: false, username: '데이지', date: '2024.01.11 11:30'},
-      {id: 2, text: '1월 2주차 이상치 파악', check: true, username: '스콧', date: '2024.01.11 11:35'},
-    ]
+    this.list()
   },
-
+  
   methods: {
-    create() {
+    async list() {
+      this.items = await this.request.get('todo/')
+    },
+
+    async create() {
       if (this.text) {
-        this.items.push({
-          id: this.items.length,
-          text: this.text,
-          check: false,
-          username: '테스터',
-          date: '2024.01.11 12:00',
-        })
-        this.text = null
+        await this.request.post('todo/', {text: this.text})
+        this.text=null
+        this.$fetch()
       }
     },
     
-    remove(id) {
-      this.items = this.items.filter( item => item.id !== id )
+    async remove(id) {
+      await this.request.delete(`todo/${id}/`)
+      this.items = this.items.filter(item => item.id !== id)
+    },
+
+    async check(item) {
+      await this.request.patch(`todo/${item.id}/`, {is_checked: item.is_checked})
     }
   }
 }
 </script>
+<style>
+.list-card {
+  overflow-y: auto;
+  height: calc(76vh - 135px);
+}
+</style>

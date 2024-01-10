@@ -1,10 +1,12 @@
 <template>
   <section>
+    <!-- 건수 -->
     <article class="ml-4">
       {{ describe }}
       <strong class="success--text">
         {{ typeof item.count === 'number' ? item.count.toLocaleString() : item.count }}
       </strong> 건
+      <!-- 초기화 -->
       <v-btn
         v-if="Object.keys(query).length>0"
         text
@@ -18,6 +20,7 @@
         초기화
       </v-btn>
     </article>
+    <!-- 데이터 리스트 -->
     <v-data-table 
       :headers="headers"
       :items="item.results"

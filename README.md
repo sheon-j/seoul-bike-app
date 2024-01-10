@@ -1,4 +1,4 @@
-# :bicyclist: 서울시 공공자전거 이용정보 실습
+# 서울시 공공자전거 이용정보 실습 :bicyclist: 
 
 ![](https://blog.kakaocdn.net/dn/32N09/btqwOA4U9in/uNZIaP2L8af84EnJS6KxF1/img.png)
 
@@ -10,18 +10,24 @@
 
 
 ## VSCODE 익스텐션
+
 - Remote Development
+- Vue Language Features (Volar)
+- Django
 
 
 ## Dockerfile 실행
+
 - 개발 환경을 위한 도커 파일을 실행합니다.
+
 ```shell
 # 도커파일을 이미지로 빌드합니다.
 docker build -t seoul-bike-image .
 
 # 빌드한 이미지를 실행합니다.
-docker run -v ${pwd}:/app/seoul-bike-app --name jsh -dit --rm seoul-bike-image
+docker run --name jsh -dit --rm seoul-bike-image
 ```
+
 - VSCode로 이동합니다
 - `Ctrl`or`Cmd` + `P` 입력 > `>dev con: arc` 입력 > `JSH` 선택
 
@@ -70,4 +76,3 @@ yarn
 # 서버를 실행합니다.
 yarn dev
 ```
-

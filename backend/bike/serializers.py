@@ -11,11 +11,12 @@ class BikeSerializer(serializers.ModelSerializer):
   gender = serializers.SerializerMethodField()
   travel_distance = serializers.SerializerMethodField()
   travel_time = serializers.SerializerMethodField()
+  rental_time = serializers.SerializerMethodField()
 
   class Meta:
     # 시리얼라이저에 메타 속성을 정의합니다. 
     model = Bike
-    exclude = ("id", "created_at", "updated_at")
+    exclude = ("created_at", "updated_at")
     read_only_fields = ("id", "created_at", "updated_at")
 
   # get_<field_name>으로 함수형 시리얼라이저를 정의합니다.
@@ -44,3 +45,15 @@ class BikeSerializer(serializers.ModelSerializer):
     if travel_time > 60:
       return f'{travel_time//60}시간 {travel_time%60}분'
     return f'{travel_time}분'
+  
+  def get_rental_time(self, obj):
+    '''
+    렌탈한 시간 변환
+    '''
+    rental_time = obj.rental_time
+    if rental_time == 0:
+      return f'오전 12시'
+    elif rental_time >= 12:
+      return f'오후 {rental_time-12}시'
+    else:
+      return f'오전 {rental_time}시'

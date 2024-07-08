@@ -5,11 +5,18 @@
         <!-- 타이틀 -->
         <list-title 
           class="font-weight-bold pb-0 ml-4 mr-4"
-          @dialog-on="dialog=true"
+          @filter-on="filterDialog=true"
+          @todo-on="todoDialog=true"
         />
         <!-- 검색 필터 다이얼로그 -->
-        <v-dialog v-model="dialog" width="800">
-          <search-filter @close="dialog=false"/>
+        <v-dialog v-model="filterDialog" width="800">
+          <search-filter @close="filterDialog=false"/>
+        </v-dialog>
+        <!-- 투두 리스트 -->
+        <v-dialog v-model="todoDialog" width="600" height="80vh">
+          <todo-list
+            @close="todoDialog=false"
+          />
         </v-dialog>
         <v-card-text>
           <!-- 로딩 스켈레톤 -->
@@ -43,7 +50,8 @@ export default {
       item: null,           // fetch 할 리스트 아이템
       loading: false,       // 로딩 정보를 표시할 Boolean
       request: ApiService,  // Api 요청을 위한 클래스
-      dialog: false,        // 다이얼로그를 표시할 Boolean
+      filterDialog: false,  // 다이얼로그를 표시할 Boolean
+      todoDialog: false,    // Todo 다이얼로그
     }
   },
 

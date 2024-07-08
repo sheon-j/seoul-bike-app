@@ -97,6 +97,10 @@ export default {
           title: "구분",
           filters: [
             {
+              text: '중요',
+              value: {mark: 'true'},
+            },
+            {
               text: '남자',
               value: {gender: 'M'},
             },
@@ -186,6 +190,10 @@ export default {
             {
               text: '이동거리',
               value: {ordering: '-travel_distance'},
+            },
+            {
+              text: '건수',
+              value: {ordering: '-count'}
             },
             {
               text: '운동량',

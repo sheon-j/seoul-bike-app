@@ -20,13 +20,17 @@
       @click:clear="getClear"
     />
     <!-- 필터 버튼 -->
-    <v-btn icon @click="$emit('dialog-on')">
+    <v-btn icon @click="$emit('filter-on')">
       <v-icon> {{ mdiTune }} </v-icon>
+    </v-btn>
+    <!-- 필터 버튼 -->
+    <v-btn icon @click="$emit('todo-on')">
+      <v-icon> {{ mdiStickerCheckOutline }} </v-icon>
     </v-btn>
   </v-card-title>
 </template>
 <script>
-import { mdiMagnify, mdiTune } from '@mdi/js'
+import { mdiMagnify, mdiTune, mdiStickerCheckOutline } from '@mdi/js'
 
 export default {
   data() {
@@ -34,6 +38,7 @@ export default {
       search: this.$route.query.search || '',
       mdiMagnify,
       mdiTune,
+      mdiStickerCheckOutline,
     }
   }, 
   methods: {

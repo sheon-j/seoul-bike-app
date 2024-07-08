@@ -40,6 +40,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    '@nuxtjs/composition-api/module',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -53,7 +54,9 @@ export default {
       dark: false,
       themes: {
         light: {
-          success: colors.green.darken3
+          primary: colors.green.darken3,
+          accent: colors.green.accent4,
+          grey: colors.grey.lighten1
         },
         dark: {
           primary: colors.blue.darken2,

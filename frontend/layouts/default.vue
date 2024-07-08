@@ -14,11 +14,6 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <v-footer app>
-      <v-spacer />
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-      <v-spacer />
-    </v-footer>
   </v-app>
 </template>
 

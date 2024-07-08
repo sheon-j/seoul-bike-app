@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
+    "@nuxtjs/composition-api": "^0.34.0",
     "axios": "^1.6.3",
     "core-js": "^3.25.3",
     "nuxt": "^2.15.8",

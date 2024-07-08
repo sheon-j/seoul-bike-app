@@ -1,20 +1,16 @@
 <template>
-  <section>
+  <div>
     <!-- 건수 -->
     <article class="ml-4">
-      {{ describe }}
-      <strong class="success--text">
-        {{ typeof item.count === 'number' ? item.count.toLocaleString() : item.count }}
-      </strong> 건
+      {{ describe }} <strong class="primary--text">{{ itemsCount }}</strong>건
       <!-- 초기화 -->
       <v-btn
-        v-if="Object.keys(query).length>0"
+        v-if="search || filters"
         text
         x-small
         elevation="0"
         plain
         to="/"
-        class="ml-2 pl-0 pr-0 black--text"
       >
         <v-icon x-small class="mr-1"> {{ mdiRefresh }} </v-icon>
         초기화
@@ -22,8 +18,9 @@
     </article>
     <!-- 데이터 리스트 -->
     <v-data-table 
+      v-if="count"
       :headers="headers"
-      :items="item.results"
+      :items="items"
       :items-per-page="-1"
       hide-default-footer
       no-data-text="조회 가능한 데이터가 없습니다."
@@ -31,9 +28,9 @@
     >
       <!-- 중요 -->
       <template #[`item.mark`]="{ item, value }">
-        <v-btn icon small @click="mark(item)">
-          <v-icon v-if="value" color="success lighten-2"> {{ mdiStar }} </v-icon>
-          <v-icon v-else color="grey lighten-1"> {{ mdiStarOutline }} </v-icon>
+        <v-btn icon small @click="markItem(item)">
+          <v-icon v-if="value" color="accent"> {{ mdiStar }} </v-icon>
+          <v-icon v-else color="grey"> {{ mdiStarOutline }} </v-icon>
         </v-btn>
       </template>
 
@@ -52,72 +49,101 @@
         <span class="caption">{{ value }}</span>
       </template>
     </v-data-table>
-  </section>
+    <div v-else class="empty">
+      <v-avatar color="green accent-2" class="ma-8">
+        <v-icon large>{{ mdiExclamationThick }}</v-icon>
+      </v-avatar>
+      <h2>조회할 수 있는 데이터가 없습니다.</h2>
+    </div>
+  </div>
 </template>
 <script>
-import { mdiRefresh, mdiStar, mdiStarOutline } from '@mdi/js'
+import { useContext, computed } from '@nuxtjs/composition-api'
+import { mdiRefresh, mdiStar, mdiStarOutline, mdiExclamationThick } from '@mdi/js'
 import ApiService from '@/services/api.service'
 
 export default {
   props: {
-    item: {
-      type: Object,
+    count: {
+      type: Number,
+      default: 0
+    },
+    items: {
+      type: Array,
       default: () => {}
     }
   },
 
-  data() {
-    return {
-      request: ApiService,
-      mdiRefresh,
-      mdiStar, 
-      mdiStarOutline,
-    }
-  },
+  setup(props) {
+    const { query } = useContext()
+    const headers = [
+      { text: '중요', value: 'mark', align:'center', width: 28, sortable: false,},
+      { text: '구분', value: 'rental_category', width: 112, sortable: false },
+      { text: '대여소', value: 'place_name', width: '200', sortable: false },
+      { text: '일시', value: 'rental_date', align: 'right', width: 100, sortable: false },
+      { text: '시간', value: 'rental_time', align: 'right', width: 84, sortable: false },
+      { text: '이동거리', value: 'travel_distance', align: 'right', width: 100, sortable: false },
+      { text: '이동시간', value: 'travel_time', align: 'right', width: 100, sortable: false },
+      { text: '성별', value: 'gender', align: 'center', width: 56, sortable: false },
+      { text: '연령', value: 'age', align: 'right', width: 72, sortable: false },
+      { text: '건수', value: 'count', align: 'right', width: 72, sortable: false },
+      { text: '운동량', value: 'exercise', align: 'right', width: 88, sortable: false },
+      { text: '탄소량', value: 'carbon', align: 'right', width: 88, sortable: false },
+    ]
 
-  computed: {
-    headers() { // 테이블 헤더
-      return [
-        { text: '중요', value: 'mark', align:'center', width: 28, sortable: false,},
-        { text: '구분', value: 'rental_category', width: 112, sortable: false },
-        { text: '대여소', value: 'place_name', width: '200', sortable: false },
-        { text: '일시', value: 'rental_date', align: 'right', width: 100, sortable: false },
-        { text: '시간', value: 'rental_time', align: 'right', width: 84, sortable: false },
-        { text: '이동거리', value: 'travel_distance', align: 'right', width: 100, sortable: false },
-        { text: '이동시간', value: 'travel_time', align: 'right', width: 100, sortable: false },
-        { text: '성별', value: 'gender', align: 'center', width: 56, sortable: false },
-        { text: '연령', value: 'age', align: 'right', width: 72, sortable: false },
-        { text: '건수', value: 'count', align: 'right', width: 72, sortable: false },
-        { text: '운동량', value: 'exercise', align: 'right', width: 88, sortable: false },
-        { text: '탄소량', value: 'carbon', align: 'right', width: 88, sortable: false },
-      ]
-    },
-    
-    query() {
-      const { page, ...query } = this.$route.query
-      return query
-    },
+    // 아이템 수
+    const itemsCount  = computed(() => {
+      return props.count.toLocaleString()
+    })
 
-    describe() {
-      // 조건별 건수 설명 표기
-      if (this.query.search) {
-        return `"${this.query.search}"에 대한 검색 결과`
-      } else if (Object.keys(this.query).length > 0) {
-        return '필터링 결과'
+    // 페이지를 제외한 필터 수
+    const filters = computed(() => {
+      const { page, search, ...filters} = query.value
+      return Object.keys(filters).length
+    })
+
+    const search = computed(() => {
+      const { search } = query.value
+      return search
+    })
+
+    // 필터 개요
+    const describe = computed(() => {
+      if (search.value) {
+        return `${search.value}에 대한 검색 결과`
+      } else if (filters.value) {
+        return `${filters.value}개 필터링 결과`
       } else {
         return '전체'
       }
-    },
-  },
+    })
 
-  methods: {
-    async mark(item) {
-      item.mark = !item.mark
-      await this.request.patch( // patch request
-        `bike/${item.id}/`, 
-        { mark: item.mark },
-      )
+    // 중요 표시
+    const markItem = async (item) => {
+      let {id, mark} = item
+      mark = !mark
+      item.mark = mark
+      await ApiService.patch(`bike/${id}/`, { mark })
     }
-  },
+
+    return {
+      headers,
+      itemsCount,
+      filters,
+      search,
+      describe,
+      markItem,
+      mdiRefresh,
+      mdiStar, 
+      mdiStarOutline,
+      mdiExclamationThick,
+    }
+  }
 }
 </script>
+<style>
+.empty{
+  text-align: center;
+  margin-top: 100px;
+}
+</style>

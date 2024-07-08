@@ -1,66 +1,70 @@
 <template>
-  <v-card-title>
+  <v-card-title class="pr-0">
     <!-- 타이틀 제목 -->
     서울시 공공자전거 이용현황 🚴
     <v-spacer/>
+    <!-- 필터 버튼 -->
+    <v-btn icon @click="$emit('todo-on')">
+      <v-icon> {{ mdiStickerCheckOutline }} </v-icon>
+    </v-btn>
+    <!-- 필터 버튼 -->
+    <v-btn icon @click="$emit('filter-on')">
+      <v-icon> {{ mdiTune }} </v-icon>
+    </v-btn>
     <!-- 키워드 검색 -->
     <v-text-field
-      ref="search"
+      ref="searchBar"
       v-model="search"
-      outlined
       dense
+      rounded
+      outlined
       hide-details
       placeholder="키워드 검색"
       clearable
       :prepend-inner-icon="mdiMagnify"
       color="black"
-      class="shrink rounded-lg ml-1 mr-1"
+      class="shrink ml-1"
       @keyup.enter="getSearch"
       @click:prepend-inner="getSearch"
       @click:clear="getClear"
     />
-    <!-- 필터 버튼 -->
-    <v-btn icon @click="$emit('filter-on')">
-      <v-icon> {{ mdiTune }} </v-icon>
-    </v-btn>
-    <!-- 필터 버튼 -->
-    <v-btn icon @click="$emit('todo-on')">
-      <v-icon> {{ mdiStickerCheckOutline }} </v-icon>
-    </v-btn>
   </v-card-title>
 </template>
 <script>
+import { ref, useContext, useRouter } from '@nuxtjs/composition-api'
 import { mdiMagnify, mdiTune, mdiStickerCheckOutline } from '@mdi/js'
 
 export default {
-  data() {
+  setup() {
+    const { query } = useContext()
+    const router = useRouter()
+    const search = ref('')
+    const searchBar = ref(null)
+
+    const getSearch = () => {
+      if (search.value) { // 텍스트 입력
+        const {page, ...rest} = query.value
+        rest.search = search.value
+        router.push({ query: rest })
+        searchBar.value.blur()
+      }
+    }
+
+    const getClear = () => {
+      const {page, search, ...rest} = query.value
+      router.push({ query: rest })
+      searchBar.value.blur()
+    }
+
     return {
-      search: this.$route.query.search || '',
+      search,
+      searchBar,
+      getSearch,
+      getClear,
       mdiMagnify,
       mdiTune,
       mdiStickerCheckOutline,
     }
-  }, 
-  methods: {
-    // 함수 정의
-    getSearch() {
-      if (this.search) { // 텍스트 입력
-        // 페이지 제외
-        const {page, ...query} = this.$route.query
-        // 이전 쿼리 값 전이
-        query.search = this.search
-        this.$router.push({ query })
-        // 포커스 해제
-        this.$refs.search.blur()
-      }
-    },
-
-    getClear() {
-      const {page, search, ...query} = this.$route.query
-      this.$router.push({ query })
-      // 포커스 해제
-      this.$refs.search.blur()
-    },
   }
 }
 </script>

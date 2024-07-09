@@ -1,14 +1,12 @@
-# 서울시 공공자전거 이용정보 실습 :bicyclist: 
+# 서울시 공공자전거 이용정보 실습 :bicyclist:
 
-![](https://blog.kakaocdn.net/dn/32N09/btqwOA4U9in/uNZIaP2L8af84EnJS6KxF1/img.png)
+![](https://github.com/sheon-j/seoul-bike-app/blob/main/docs/images/seoul_bike.png?raw=true)
 
 ## 데이터 출처
 
 - [서울 열린데이터 광장 - 서울시 공공자전거 이용정보(시간대별)](http://data.seoul.go.kr/dataList/OA-15245/F/1/datasetView.do#)
-- 서울특별시 공공자전거 이용정보(시간대별)_2017년.zip
+- 서울특별시 공공자전거 이용정보(시간대별)\_2017년.zip
   (2017-01-01~2017-01-11 데이터를 2024년으로 전처리 하였습니다. 교육용으로 참고하시면 감사하겠습니다.)
-
-
 
 ## VSCODE 익스텐션
 
@@ -16,8 +14,6 @@
 - Vue Language Features (Volar)
 - Django
 - Python
-
-
 
 ## Backend 실행
 
@@ -45,8 +41,6 @@ python manage.py createsuperuser
 # db에 샘플데이터를 생성합니다.
 python manage.py createbikedata
 ```
-
-
 
 ## Frontend 실행
 

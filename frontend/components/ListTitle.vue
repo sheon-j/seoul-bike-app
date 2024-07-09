@@ -11,8 +11,12 @@
     <v-btn icon @click="$emit('filter-on')">
       <v-icon> {{ mdiTune }} </v-icon>
     </v-btn>
+    <v-btn v-show="!isSearchable" icon @click="showSearchBar">
+      <v-icon>{{ mdiMagnify }}</v-icon>
+    </v-btn>
     <!-- 키워드 검색 -->
     <v-text-field
+      v-show="isSearchable"
       ref="searchBar"
       v-model="search"
       dense
@@ -40,6 +44,7 @@ export default {
     const router = useRouter()
     const search = ref('')
     const searchBar = ref(null)
+    const isSearchable = ref(false)
 
     const getSearch = () => {
       if (search.value) {
@@ -47,6 +52,8 @@ export default {
         const { page, ...rest } = query.value
         rest.search = search.value
         router.push({ query: rest })
+        isSearchable.value = false
+        search.value = ''
         searchBar.value.blur()
       }
     }
@@ -57,11 +64,18 @@ export default {
       searchBar.value.blur()
     }
 
+    const showSearchBar = () => {
+      isSearchable.value = true
+      setTimeout(() => searchBar.value.focus(), 200)
+    }
+
     return {
       search,
       searchBar,
+      isSearchable,
       getSearch,
       getClear,
+      showSearchBar,
       mdiMagnify,
       mdiTune,
       mdiStickerCheckOutline

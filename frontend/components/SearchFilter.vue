@@ -24,7 +24,7 @@
             :class="`filter-text ma-4 ml-0${
               filter.isActive ? ' font-weight-bold black--text' : ''
             }`"
-            @click="getSearch(filter.isActive, filter.value)"
+            @click="getFilter(filter)"
           >
             {{ filter.text }}
           </section>
@@ -35,7 +35,7 @@
 </template>
 <script>
 import _ from 'lodash'
-import { useContext, computed } from '@nuxtjs/composition-api'
+import { useContext, computed, useRouter } from '@nuxtjs/composition-api'
 import { mdiClose } from '@mdi/js'
 export default {
   setup() {
@@ -45,7 +45,9 @@ export default {
       const pastDate = today.setDate(today.getDate() + diff)
       return new Date(pastDate).toISOString().slice(0, 10)
     }
+
     const { query } = useContext()
+    const router = useRouter()
     const items = computed(() => {
       const items = [
         {
@@ -54,36 +56,36 @@ export default {
             {
               text: '오늘',
               value: {
-                rental_date__gte: this.getDate(),
-                rental_date__lte: this.getDate()
+                rental_date__gte: getDate(),
+                rental_date__lte: getDate()
               }
             },
             {
               text: '어제',
               value: {
-                rental_date__gte: this.getDate(-1),
-                rental_date__lte: this.getDate()
+                rental_date__gte: getDate(-1),
+                rental_date__lte: getDate()
               }
             },
             {
               text: '최근 7일',
               value: {
-                rental_date__gte: this.getDate(-7),
-                rental_date__lte: this.getDate()
+                rental_date__gte: getDate(-7),
+                rental_date__lte: getDate()
               }
             },
             {
               text: '최근 30일',
               value: {
-                rental_date__gte: this.getDate(-30),
-                rental_date__lte: this.getDate()
+                rental_date__gte: getDate(-30),
+                rental_date__lte: getDate()
               }
             },
             {
               text: '최근 1년 ',
               value: {
-                rental_date__gte: this.getDate(-365),
-                rental_date__lte: this.getDate()
+                rental_date__gte: getDate(-365),
+                rental_date__lte: getDate()
               }
             }
           ]
@@ -200,39 +202,36 @@ export default {
           ]
         } // 각 filter 요소 마다 쿼리가 적용되었는지 확인하는 isActive 삽입
       ]
-
       items.map((item) => {
         item.filters.map((filter) => {
-          // 쿼리에 필터 value 가 포함되어있는지 확인
           const isActive = _.isMatch(query.value, filter.value)
           return (filter.isActive = isActive)
         })
-        return items
       })
+      return items
     })
 
-    const getSearch = (active, value) => {
-      // 필터 적용 로직
-      const { page, ...prevQuery } = this.query
-      // 쿼리 유무에 따라 로직 분기
-      const query = active
-        ? // 쿼리 있음
-          Object.keys(prevQuery).reduce((acc, cur) => {
-            // URL 쿼리 키에 value 키가 없으면 acc 에 삽입 (있는 값은 삭제)
+    const getFilter = ({isActive, value}) => {
+      const { page, ...rest } = query.value
+      console.log(page, rest)
+      let filters
+      if (isActive) {
+        filters = Object.keys(rest).reduce((acc, cur) => {
             if (!Object.keys(value).includes(cur)) {
-              acc[cur] = prevQuery[cur]
+              acc[cur] = rest[cur]
             }
             return acc
           }, {})
-        : // 쿼리 없음
-          { ...prevQuery, ...value }
-      this.$router.push({ query })
+      } else {
+        filters = { ...rest, ...value }
+      }
+      router.push({ query: filters })
     }
 
     return {
       items,
       query,
-      getSearch,
+      getFilter,
       mdiClose
     }
   }

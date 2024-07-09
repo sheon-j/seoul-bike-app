@@ -57,6 +57,7 @@
   </v-row>
 </template>
 <script>
+import { ref, computed, useContext, useRouter } from '@nuxtjs/composition-api'
 import {
   mdiChevronLeft,
   mdiChevronDoubleLeft,
@@ -73,38 +74,36 @@ export default {
     }
   },
 
-  data() {
+  setup(props, { emit }) {
+    const { query } = useContext()
+    const router = useRouter()
+    const limit = 20
+    const page = ref(Number(query.value.page) || 1)
+    const endPage = computed(() => Math.ceil(props.count / limit))
+
+    const changePage = (p) => {
+      emit('is-loading')
+      page.value = p
+      const pagingQuery = { ...query.value, page: p }
+      router.push({ query: pagingQuery })
+    }
+
+    const pages = computed(() => {
+      const firstPage = parseInt((page.value - 1) / 10) * 10 + 1
+      const lastPage = firstPage + 10 > endPage.value ? endPage.value + 1 : firstPage + 10
+      return _.range(firstPage, lastPage)
+    })
+
     return {
+      limit,
+      page,
+      endPage,
+      pages,
+      changePage,
       mdiChevronLeft,
       mdiChevronDoubleLeft,
       mdiChevronRight,
-      mdiChevronDoubleRight,
-      page: Number(this.$route.query.page) || 1,
-      limit: 20
-    }
-  },
-
-  computed: {
-    endPage() {
-      return Math.ceil(this.count / this.limit)
-    },
-
-    pages() {
-      const startPage = parseInt((this.page - 1) / 10) * 10 + 1
-      const endPage = startPage + 10 > this.endPage ? this.endPage + 1 : startPage + 10
-      return _.range(startPage, endPage)
-    }
-  },
-
-  methods: {
-    changePage(page) {
-      // change state loading
-      this.$emit('is-loading')
-      // update page
-      this.page = page
-      const query = { ...this.$route.query, page }
-      // push query
-      this.$router.push({ query })
+      mdiChevronDoubleRight
     }
   }
 }

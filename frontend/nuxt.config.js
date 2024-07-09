@@ -9,8 +9,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - frontend',
-    title: 'frontend',
+    titleTemplate: '%s - 서울 공공자전거',
+    title: '이용현황',
     htmlAttrs: {
       lang: 'en'
     },

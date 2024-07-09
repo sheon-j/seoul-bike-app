@@ -2,7 +2,7 @@
   <v-card-title class="pr-0">
     <!-- 타이틀 제목 -->
     서울시 공공자전거 이용현황 🚴
-    <v-spacer/>
+    <v-spacer />
     <!-- 필터 버튼 -->
     <v-btn icon @click="$emit('todo-on')">
       <v-icon> {{ mdiStickerCheckOutline }} </v-icon>
@@ -42,8 +42,9 @@ export default {
     const searchBar = ref(null)
 
     const getSearch = () => {
-      if (search.value) { // 텍스트 입력
-        const {page, ...rest} = query.value
+      if (search.value) {
+        // 텍스트 입력
+        const { page, ...rest } = query.value
         rest.search = search.value
         router.push({ query: rest })
         searchBar.value.blur()
@@ -51,7 +52,7 @@ export default {
     }
 
     const getClear = () => {
-      const {page, search, ...rest} = query.value
+      const { page, search, ...rest } = query.value
       router.push({ query: rest })
       searchBar.value.blur()
     }
@@ -63,13 +64,13 @@ export default {
       getClear,
       mdiMagnify,
       mdiTune,
-      mdiStickerCheckOutline,
+      mdiStickerCheckOutline
     }
   }
 }
 </script>
 <style scoped>
-.v-text-field{
+.v-text-field {
   width: 240px;
 }
 </style>

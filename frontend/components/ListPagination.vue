@@ -1,27 +1,13 @@
 <template>
   <v-row justify="center">
     <!-- first page -->
-    <v-btn
-      large
-      icon
-      plain
-      :disabled="page===1"
-      class="ml-1 mr-1"
-      @click="changePage(1)"
-    >
+    <v-btn large icon plain :disabled="page === 1" class="ml-1 mr-1" @click="changePage(1)">
       <v-icon>
         {{ mdiChevronDoubleLeft }}
       </v-icon>
     </v-btn>
     <!-- next page -->
-    <v-btn
-      large
-      icon
-      plain
-      :disabled="page===1"
-      class="ml-1 mr-1"
-      @click="changePage(page-1)"
-    >
+    <v-btn large icon plain :disabled="page === 1" class="ml-1 mr-1" @click="changePage(page - 1)">
       <v-icon>
         {{ mdiChevronLeft }}
       </v-icon>
@@ -34,20 +20,22 @@
       :value="index"
       large
       icon
-      :color="page===index?'success':'grey lighten-1'"
-      :outlined="page===index"
+      :color="page === index ? 'success' : 'grey lighten-1'"
+      :outlined="page === index"
       class="ml-1 mr-1 font-weight-bold body-1"
-      @click="page!==index?changePage(index):undefined"
-    > {{ index }} </v-btn>
+      @click="page !== index ? changePage(index) : undefined"
+    >
+      {{ index }}
+    </v-btn>
 
     <!-- prev page -->
     <v-btn
       large
       icon
       plain
-      :disabled="page===endPage"
+      :disabled="page === endPage"
       class="ml-1 mr-1"
-      @click="changePage(page+1)"
+      @click="changePage(page + 1)"
     >
       <v-icon>
         {{ mdiChevronRight }}
@@ -58,7 +46,7 @@
       large
       icon
       plain
-      :disabled="page===endPage"
+      :disabled="page === endPage"
       class="ml-1 mr-1"
       @click="changePage(endPage)"
     >
@@ -73,7 +61,7 @@ import {
   mdiChevronLeft,
   mdiChevronDoubleLeft,
   mdiChevronRight,
-  mdiChevronDoubleRight,
+  mdiChevronDoubleRight
 } from '@mdi/js'
 import _ from 'lodash'
 
@@ -81,7 +69,7 @@ export default {
   props: {
     count: {
       type: Number,
-      required: true,
+      required: true
     }
   },
 
@@ -92,7 +80,7 @@ export default {
       mdiChevronRight,
       mdiChevronDoubleRight,
       page: Number(this.$route.query.page) || 1,
-      limit: 20,
+      limit: 20
     }
   },
 
@@ -114,10 +102,10 @@ export default {
       this.$emit('is-loading')
       // update page
       this.page = page
-      const query = {...this.$route.query, page}
+      const query = { ...this.$route.query, page }
       // push query
       this.$router.push({ query })
     }
-  },
+  }
 }
 </script>

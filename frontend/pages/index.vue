@@ -3,23 +3,23 @@
     <v-col cols="12">
       <v-card elevation="0">
         <!-- 타이틀 -->
-        <list-title 
+        <list-title
           class="font-weight-bold pb-0 ml-4 mr-4"
-          @filter-on="filterDialog=true"
-          @todo-on="todoDialog=true"
+          @filter-on="filterDialog = true"
+          @todo-on="todoDialog = true"
         />
         <v-card-text>
           <!-- 로딩 스켈레톤 -->
-          <loading-list v-if="isLoading"/>
+          <loading-list v-if="isLoading" />
           <div v-else>
             <!-- 리스트 -->
-            <bike-list :count="count" :items="items"/>
+            <bike-list :count="count" :items="items" />
             <!-- 페이지 -->
             <list-pagination
-              v-if="count>0"
-              :count="count" 
+              v-if="count > 0"
+              :count="count"
               class="mt-8 mb-0"
-              @is-loading="isLoading=true"
+              @is-loading="isLoading = true"
             />
           </div>
         </v-card-text>
@@ -27,11 +27,11 @@
     </v-col>
     <!-- 검색 필터 다이얼로그 -->
     <v-dialog v-model="filterDialog" width="800">
-      <search-filter @close="filterDialog=false"/>
+      <search-filter @close="filterDialog = false" />
     </v-dialog>
     <!-- 투두 리스트 -->
     <v-dialog v-model="todoDialog" width="600" height="80vh">
-      <todo-list @close="todoDialog=false"/>
+      <todo-list @close="todoDialog = false" />
     </v-dialog>
   </v-row>
 </template>
@@ -49,11 +49,11 @@ export default {
       items: [],
       isLoading: false,
       filterDialog: false,
-      todoDialog: false,
+      todoDialog: false
     })
 
     // 리스트 페치
-    const { fetch } = useFetch( async () => {
+    const { fetch } = useFetch(async () => {
       state.isLoading = true
       const params = new URLSearchParams(query.value).toString()
       const { count, results } = await ApiService.get(`bike/?${params}`)
@@ -65,7 +65,7 @@ export default {
     // 쿼리 변화
     watch(query, fetch)
 
-    return {...toRefs(state)}
+    return { ...toRefs(state) }
   }
 }
 </script>

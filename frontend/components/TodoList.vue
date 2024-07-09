@@ -35,9 +35,7 @@
               </v-list-item-content>
               <!-- 삭제 -->
               <v-list-item-action v-show="hover">
-                <v-btn icon small @click="remove(item)">
-                  <v-icon small>{{ mdiTrashCanOutline }}</v-icon>
-                </v-btn>
+                <v-btn plain text small :ripple="false" @click="remove(item)"> 삭제 </v-btn>
               </v-list-item-action>
             </v-list-item>
           </v-hover>
@@ -65,7 +63,7 @@
 <script>
 import { ref } from '@nuxtjs/composition-api'
 import ApiService from '@/services/api.service'
-import { mdiClose, mdiTrashCanOutline, mdiArrowUpCircle } from '@mdi/js'
+import { mdiClose, mdiArrowUpCircle } from '@mdi/js'
 
 export default {
   setup() {
@@ -109,7 +107,6 @@ export default {
       check,
       getInfo,
       mdiClose,
-      mdiTrashCanOutline,
       mdiArrowUpCircle
     }
   }

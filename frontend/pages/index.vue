@@ -5,8 +5,8 @@
         <!-- 타이틀 -->
         <list-title
           class="font-weight-bold pb-0 ml-4 mr-4"
-          @filter-on="filterDialog = true"
-          @todo-on="todoDialog = true"
+          @show-filter="filterDialog = true"
+          @show-todo="todoDialog = true"
         />
         <v-card-text>
           <!-- 로딩 스켈레톤 -->
@@ -25,7 +25,7 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <!-- 검색 필터 다이얼로그 -->
+    <!-- 필터링 다이얼로그 -->
     <v-dialog v-model="filterDialog" width="800">
       <search-filter @close="filterDialog = false" />
     </v-dialog>

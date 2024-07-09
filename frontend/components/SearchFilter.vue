@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title>
       <!-- 제목 -->
-      검색 필터
+      필터링
       <v-spacer />
       <!-- 닫기 버튼 -->
       <v-btn icon @click="$emit('close')">
@@ -211,17 +211,17 @@ export default {
       return items
     })
 
-    const getFilter = ({isActive, value}) => {
+    const getFilter = ({ isActive, value }) => {
       const { page, ...rest } = query.value
       console.log(page, rest)
       let filters
       if (isActive) {
         filters = Object.keys(rest).reduce((acc, cur) => {
-            if (!Object.keys(value).includes(cur)) {
-              acc[cur] = rest[cur]
-            }
-            return acc
-          }, {})
+          if (!Object.keys(value).includes(cur)) {
+            acc[cur] = rest[cur]
+          }
+          return acc
+        }, {})
       } else {
         filters = { ...rest, ...value }
       }

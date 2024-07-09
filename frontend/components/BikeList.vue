@@ -104,7 +104,7 @@ export default {
     // 필터 개요
     const describe = computed(() => {
       if (search.value) {
-        return `${search.value}에 대한 검색 결과`
+        return `"${search.value}"에 대한 검색 결과`
       } else if (filters.value) {
         return `${filters.value}개 필터링 결과`
       } else {

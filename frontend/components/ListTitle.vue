@@ -3,17 +3,33 @@
     <!-- 타이틀 제목 -->
     서울시 공공자전거 이용현황 🚴
     <v-spacer />
-    <!-- 필터 버튼 -->
-    <v-btn icon @click="$emit('todo-on')">
-      <v-icon> {{ mdiStickerCheckOutline }} </v-icon>
-    </v-btn>
-    <!-- 필터 버튼 -->
-    <v-btn icon @click="$emit('filter-on')">
-      <v-icon> {{ mdiTune }} </v-icon>
-    </v-btn>
-    <v-btn v-show="!isSearchable" icon @click="showSearchBar">
-      <v-icon>{{ mdiMagnify }}</v-icon>
-    </v-btn>
+    <!-- 할 일 목록 -->
+    <v-tooltip bottom open-delay="200">
+      <template #activator="{ on }">
+        <v-btn v-on="on" icon @click="$emit('show-filter')">
+          <v-icon> {{ mdiStickerCheckOutline }} </v-icon>
+        </v-btn>
+      </template>
+      <span> 할 일 목록 </span>
+    </v-tooltip>
+    <!-- 필터링 버튼 -->
+    <v-tooltip bottom open-delay="200">
+      <template #activator="{ on }">
+        <v-btn v-on="on" icon @click="$emit('show-todo')">
+          <v-icon> {{ mdiTune }} </v-icon>
+        </v-btn>
+      </template>
+      <span> 필터링 </span>
+    </v-tooltip>
+    <!-- 키워드 검색 -->
+    <v-tooltip bottom open-delay="200">
+      <template #activator="{ on }">
+        <v-btn v-show="!isSearchable" v-on="on" icon @click="showSearchBar">
+          <v-icon>{{ mdiMagnify }}</v-icon>
+        </v-btn>
+      </template>
+      <span> 키워드 검색 </span>
+    </v-tooltip>
     <!-- 키워드 검색 -->
     <v-text-field
       v-show="isSearchable"

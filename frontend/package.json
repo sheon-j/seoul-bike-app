@@ -12,9 +12,11 @@
     "@mdi/js": "^7.4.47",
     "@nuxtjs/composition-api": "^0.34.0",
     "axios": "^1.6.3",
+    "chart.js": "^2",
     "core-js": "^3.25.3",
     "nuxt": "^2.15.8",
     "vue": "^2.7.10",
+    "vue-chartjs": "^3",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
     "vuetify": "^2.6.10"

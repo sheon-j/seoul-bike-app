@@ -6,17 +6,26 @@
     <!-- 할 일 목록 -->
     <v-tooltip bottom open-delay="200">
       <template #activator="{ on }">
-        <v-btn v-on="on" icon @click="$emit('show-filter')">
+        <v-btn v-on="on" icon @click="$emit('show-todo')">
           <v-icon> {{ mdiStickerCheckOutline }} </v-icon>
         </v-btn>
       </template>
       <span> 할 일 목록 </span>
     </v-tooltip>
+    <!-- 차트 버튼 -->
+    <v-tooltip bottom open-delay="200">
+      <template #activator="{ on }">
+        <v-btn v-on="on" icon @click="$emit('show-chart')">
+          <v-icon> {{ mdiChartBar }} </v-icon>
+        </v-btn>
+      </template>
+      <span> 차트 보기 </span>
+    </v-tooltip>
     <!-- 필터링 버튼 -->
     <v-tooltip bottom open-delay="200">
       <template #activator="{ on }">
-        <v-btn v-on="on" icon @click="$emit('show-todo')">
-          <v-icon> {{ mdiTune }} </v-icon>
+        <v-btn v-on="on" icon @click="$emit('show-filter')">
+          <v-icon> {{ mdiTuneVertical }} </v-icon>
         </v-btn>
       </template>
       <span> 필터링 </span>
@@ -52,7 +61,7 @@
 </template>
 <script>
 import { ref, useContext, useRouter } from '@nuxtjs/composition-api'
-import { mdiMagnify, mdiTune, mdiStickerCheckOutline } from '@mdi/js'
+import { mdiMagnify, mdiTuneVertical, mdiChartBar, mdiStickerCheckOutline } from '@mdi/js'
 
 export default {
   setup() {
@@ -93,7 +102,8 @@ export default {
       getClear,
       showSearchBar,
       mdiMagnify,
-      mdiTune,
+      mdiTuneVertical,
+      mdiChartBar,
       mdiStickerCheckOutline
     }
   }

@@ -4,7 +4,8 @@
       <v-card elevation="0">
         <!-- 타이틀 -->
         <list-title
-          class="font-weight-bold pb-0 ml-4 mr-4"
+          class="list-title"
+          @show-chart="showChart = !showChart"
           @show-filter="filterDialog = true"
           @show-todo="todoDialog = true"
         />
@@ -12,6 +13,7 @@
           <!-- 로딩 스켈레톤 -->
           <loading-list v-if="isLoading" />
           <div v-else>
+            <bike-chart v-if="chartItems.length && showChart" :items="chartItems" />
             <!-- 리스트 -->
             <bike-list :count="count" :items="items" />
             <!-- 페이지 -->
@@ -37,7 +39,7 @@
 </template>
 
 <script>
-import { useContext, reactive, watch, useFetch, toRefs } from '@nuxtjs/composition-api'
+import { useContext, reactive, watch, useFetch, toRefs, computed } from '@nuxtjs/composition-api'
 import ApiService from '@/services/api.service'
 
 export default {
@@ -47,25 +49,44 @@ export default {
     const state = reactive({
       count: 0,
       items: [],
+      chartItems: [],
       isLoading: false,
       filterDialog: false,
-      todoDialog: false
+      todoDialog: false,
+      showChart: true
+    })
+
+    const parmas = computed(() => new URLSearchParams(query.value).toString())
+    const filters = computed(() => {
+      const { page, ...rest } = query.value
+      return rest
     })
 
     // 리스트 페치
-    const { fetch } = useFetch(async () => {
+    const { fetch: fetchList } = useFetch(async () => {
       state.isLoading = true
-      const params = new URLSearchParams(query.value).toString()
-      const { count, results } = await ApiService.get(`bike/?${params}`)
+      const { count, results } = await ApiService.get(`bike/?${parmas.value}`)
       state.count = count
       state.items = results
       state.isLoading = false
     })
 
+    const { fetch: fetchChart } = useFetch(async () => {
+      state.chartItems = await ApiService.get(`bike/chart/?${parmas.value}`)
+    })
+
     // 쿼리 변화
-    watch(query, fetch)
+    watch(query, fetchList)
+    watch(filters, fetchChart)
 
     return { ...toRefs(state) }
   }
 }
 </script>
+<style>
+.list-title {
+  font-weight: bold;
+  padding-bottom: 0;
+  margin: 0 16px 0 16px;
+}
+</style>

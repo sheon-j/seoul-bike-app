@@ -11,7 +11,6 @@ class BikeList(generics.ListCreateAPIView):
     '''
     Bike 리스트 View(서비스 로직)
     '''
-    model = Bike                       # 모델 등록
     queryset = Bike.objects.all()      # 기본 쿼리셋
     serializer_class = BikeSerializer  # 시리얼라이저 등록
     filter_backends = (                # 필터 클래스 등록
@@ -47,9 +46,7 @@ class BikeList(generics.ListCreateAPIView):
     }
 
     def delete(self, request, *args, **kwargs):
-        '''
-        특정 요청 메소드를 정의 할 수 있습니다.
-        '''
+        '''특정 요청 메소드를 정의 할 수 있습니다.'''
         queryset = self.model.all()
         delete_ids = request.data['ids']
         if delete_ids:
@@ -60,9 +57,7 @@ class BikeList(generics.ListCreateAPIView):
 
 
 class BikeDetail(generics.RetrieveUpdateDestroyAPIView):
-    '''
-    Bike 디테일 View
-    '''
+    '''Bike 디테일 View'''
     queryset = Bike.objects.all()
     serializer_class = BikeSerializer
     lookup_url_kwarg = 'id'

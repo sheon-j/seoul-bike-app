@@ -17,12 +17,7 @@
             <v-list-item class="pa-0">
               <!-- 체크박스 -->
               <v-list-item-action>
-                <v-checkbox
-                  v-model="item.is_checked"
-                  :ripple="false"
-                  color="accent"
-                  @click="check(item)"
-                />
+                <v-checkbox v-model="item.is_checked" :ripple="false" color="accent" />
               </v-list-item-action>
               <!-- 투두아이템 -->
               <v-list-item-content>
@@ -35,7 +30,7 @@
               </v-list-item-content>
               <!-- 삭제 -->
               <v-list-item-action v-show="hover">
-                <v-btn plain text small :ripple="false" @click="remove(item)"> 삭제 </v-btn>
+                <v-btn plain text small :ripple="false"> 삭제 </v-btn>
               </v-list-item-action>
             </v-list-item>
           </v-hover>
@@ -46,15 +41,12 @@
     <v-card elevation="0">
       <v-card-text>
         <v-text-field
-          v-model="text"
           dense
           rounded
           outlined
           color="success"
           :hide-details="true"
           :append-icon="mdiArrowUpCircle"
-          @keyup.enter="create"
-          @click:append="create"
         />
       </v-card-text>
     </v-card>
@@ -70,41 +62,14 @@ export default {
     const text = ref('')
     const items = ref([])
 
-    const list = async () => {
-      items.value = await ApiService.get('todo/')
-    }
-
-    const create = async () => {
-      if (text.value) {
-        await ApiService.post('todo/', { text: text.value })
-        text.value = ''
-        list()
-      }
-    }
-
-    const remove = async ({ id }) => {
-      await ApiService.delete(`todo/${id}/`)
-      items.value = items.value.filter(({ id: itemId }) => itemId !== id)
-    }
-
-    const check = async ({ id, is_checked }) => {
-      await ApiService.patch(`todo/${id}/`, { is_checked })
-    }
-
     const getInfo = ({ username, created_date }) => {
       const createdDate = created_date.replace('T', ' ').slice(0, 16)
       return `${username} | ${createdDate}`
     }
 
-    list()
-
     return {
       text,
       items,
-      list,
-      create,
-      remove,
-      check,
       getInfo,
       mdiClose,
       mdiArrowUpCircle

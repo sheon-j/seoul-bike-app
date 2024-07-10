@@ -20,28 +20,6 @@
       no-data-text="조회 가능한 데이터가 없습니다."
       class="mt-8"
     >
-      <!-- 중요 -->
-      <template #[`item.mark`]="{ item, value }">
-        <v-btn icon small @click="markItem(item)">
-          <v-icon v-if="value" color="accent"> {{ mdiStar }} </v-icon>
-          <v-icon v-else color="grey"> {{ mdiStarOutline }} </v-icon>
-        </v-btn>
-      </template>
-
-      <!-- 구분 -->
-      <template #[`item.rental_category`]="{ value }">
-        <span class="font-weight-bold">{{ value }}</span>
-      </template>
-
-      <!-- 일시 -->
-      <template #[`item.rental_date`]="{ value }">
-        <span class="caption">{{ value }}</span>
-      </template>
-
-      <!-- 시간 -->
-      <template #[`item.rental_time`]="{ value }">
-        <span class="caption">{{ value }}</span>
-      </template>
     </v-data-table>
     <div v-else class="empty">
       <v-avatar color="green accent-2" class="ma-8">
@@ -111,22 +89,12 @@ export default {
         return '전체'
       }
     })
-
-    // 중요 표시
-    const markItem = async (item) => {
-      let { id, mark } = item
-      mark = !mark
-      item.mark = mark
-      await ApiService.patch(`bike/${id}/`, { mark })
-    }
-
     return {
       headers,
       itemsCount,
       filters,
       search,
       describe,
-      markItem,
       mdiRefresh,
       mdiStar,
       mdiStarOutline,
